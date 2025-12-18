@@ -1,36 +1,78 @@
-import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-interface Note {
+type Note = {
   id: string;
-  category: string;
-  title?: string;
+  title: string;
   content: string;
-}
+  category: string;
+};
 
-interface Props {
+type Props = {
   note: Note;
   onPress: () => void;
-}
+  onEdit?: () => void;
+  onDelete?: () => void;
+};
 
-export const NoteItem = ({ note, onPress }: Props) => {
+export function NoteItem({ note, onPress, onEdit, onDelete }: Props) {
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress}>
-      {note.title && <Text style={styles.title}>{note.title}</Text>}
+    <TouchableOpacity onPress={onPress} style={styles.card}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{note.title}</Text>
+
+        <View style={styles.actions}>
+          {onEdit && (
+            <TouchableOpacity onPress={onEdit}>
+              <Text style={styles.action}>Edit</Text>
+            </TouchableOpacity>
+          )}
+
+          {onDelete && (
+            <TouchableOpacity onPress={onDelete}>
+              <Text style={[styles.action, styles.delete]}>Delete</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </View>
+
       <Text style={styles.content}>{note.content}</Text>
-      <Text style={styles.category}>{note.category}</Text>
     </TouchableOpacity>
   );
-};
+}
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#F3F4F6",
-    padding: 15,
-    borderRadius: 10,
-    marginVertical: 5,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    borderRadius: 8,
+    padding: 14,
+    marginBottom: 12,
+    backgroundColor: "#FFF",
   },
-  title: { fontWeight: "bold", fontSize: 16, marginBottom: 5 },
-  content: { fontSize: 14, color: "#374151" },
-  category: { marginTop: 5, fontSize: 12, color: "#6B7280" },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "600",
+    color: "#000",
+  },
+  content: {
+    marginTop: 6,
+    color: "#555",
+  },
+  actions: {
+    flexDirection: "row",
+    gap: 12,
+  },
+  action: {
+    fontSize: 13,
+    color: "#000",
+    textDecorationLine: "underline",
+  },
+  delete: {
+    color: "#DC2626",
+  },
 });
