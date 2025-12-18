@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { useRouter } from "expo-router";
-import image from "../../assets/login-register.png";
+import image from "../../assets/image.png";
 
 export default function Register() {
   const router = useRouter();
@@ -134,6 +134,5 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
-    marginLeft: 90
   },
 });
