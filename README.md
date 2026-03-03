@@ -91,6 +91,7 @@ npx expo start
 ### User credentials are stored locally using AsyncStorage via:
 
 authStorage.ts
+
 notesStorage.ts
 
 Note: This project uses local storage only (no backend).
