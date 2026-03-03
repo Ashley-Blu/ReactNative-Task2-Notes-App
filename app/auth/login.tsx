@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Alert,
 } from "react-native";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { useRouter } from "expo-router";
+import { loginUser } from "../../storage/authStorage";
 import image from "../../assets/image.png";
 
 export default function Login() {
@@ -17,11 +19,34 @@ export default function Login() {
   const screenWidth = Dimensions.get("window").width;
   const isWeb = screenWidth >= 768;
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert("Error", "Please enter email and password");
+      return;
+    }
+
+    setLoading(true);
+
+    const user = await loginUser(email, password);
+
+    setLoading(false);
+
+    if (!user) {
+      Alert.alert("Login Failed", "Invalid email or password");
+      return;
+    }
+
+    router.replace("/notes/work");
+  };
+
   return (
     <View style={[styles.container, isWeb && styles.containerWeb]}>
       {/* LEFT: Text + Form */}
       <View style={[styles.formContainer, isWeb && styles.formContainerWeb]}>
-        {/* Welcome text ABOVE form */}
         <Text style={styles.subtitle}>
           Welcome back to <Text style={styles.bold}>Noted</Text>.
         </Text>
@@ -31,14 +56,27 @@ export default function Login() {
 
         <Text style={styles.title}>Login</Text>
 
-        <TextInput placeholder="Email" style={styles.input} />
+        <TextInput
+          placeholder="Email"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+        />
+
         <TextInput
           placeholder="Password"
           style={styles.input}
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
         />
 
-        <PrimaryButton title="Sign In" onPress={() => {}} />
+        <PrimaryButton
+          title={loading ? "Signing In..." : "Sign In"}
+          onPress={handleLogin}
+          disabled={loading}
+        />
 
         <TouchableOpacity onPress={() => router.push("/auth/register")}>
           <Text style={styles.footerText}>

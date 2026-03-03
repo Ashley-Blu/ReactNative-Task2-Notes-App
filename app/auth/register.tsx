@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,9 +7,11 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  Alert,
 } from "react-native";
 import { PrimaryButton } from "../../components/PrimaryButton";
 import { useRouter } from "expo-router";
+import { registerUser, loginUser } from "../../storage/authStorage";
 import image from "../../assets/image.png";
 
 export default function Register() {
@@ -17,11 +19,46 @@ export default function Register() {
   const screenWidth = Dimensions.get("window").width;
   const isWeb = screenWidth >= 768;
 
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleRegister = async () => {
+    if (!email || !password || !confirmPassword) {
+      Alert.alert("Error", "All fields are required");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await registerUser({
+        email,
+        username: email.split("@")[0],
+        password,
+      });
+
+      // Auto-login after registration
+      await loginUser(email, password);
+
+      router.replace("/notes/work");
+    } catch (e) {
+      Alert.alert("Error", "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={[styles.container, isWeb && styles.containerWeb]}>
       {/* LEFT: Welcome + Form */}
       <View style={[styles.formContainer, isWeb && styles.formContainerWeb]}>
-        {/* Welcome text */}
         <Text style={styles.subtitle}>
           Welcome to <Text style={styles.bold}>Noted</Text>
         </Text>
@@ -31,15 +68,35 @@ export default function Register() {
 
         <Text style={styles.title}>Sign Up</Text>
 
-        <TextInput placeholder="Email" style={styles.input} />
-        <TextInput placeholder="Password" style={styles.input} secureTextEntry />
+        <TextInput
+          placeholder="Email"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          autoCapitalize="none"
+        />
+
+        <TextInput
+          placeholder="Password"
+          style={styles.input}
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+
         <TextInput
           placeholder="Confirm Password"
           style={styles.input}
           secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
         />
 
-        <PrimaryButton title="Register" onPress={() => {}} />
+        <PrimaryButton
+          title={loading ? "Creating Account..." : "Register"}
+          onPress={handleRegister}
+          disabled={loading}
+        />
 
         <TouchableOpacity onPress={() => router.push("/auth/login")}>
           <Text style={styles.footerText}>

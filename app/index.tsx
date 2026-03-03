@@ -1,6 +1,8 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ActivityIndicator } from "react-native";
 import { PrimaryButton } from "../components/PrimaryButton";
 import { useRouter } from "expo-router";
+import { useEffect, useState } from "react";
+import { getLoggedInUser } from "../storage/authStorage";
 import image from "../assets/logo.png";
 
 export default function Landing() {
@@ -8,33 +10,34 @@ export default function Landing() {
 
   return (
     <View style={styles.container}>
-      {/* Small image ABOVE title */}
       <Image source={image} style={styles.image} resizeMode="contain" />
-
       <Text style={styles.title}>Noted</Text>
-
-      <Text style={styles.subtitle}>
-        Capture your thoughts, beautifully.
-      </Text>
-
+      <Text style={styles.subtitle}>Capture your thoughts, beautifully.</Text>
       <View style={styles.buttonGroup}>
         <PrimaryButton
           title="Sign Up"
           onPress={() => router.push("/auth/register")}
         />
         <PrimaryButton
-          title="Login"
+          title="Sign In"
           onPress={() => router.push("/auth/login")}
           variant="outline"
         />
       </View>
-
       <Text style={styles.footer}>Simple. Minimal. Yours.</Text>
     </View>
   );
 }
 
+
 const styles = StyleSheet.create({
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+  },
+
   container: {
     flex: 1,
     justifyContent: "center",
@@ -44,7 +47,7 @@ const styles = StyleSheet.create({
   },
 
   image: {
-    width: 140,      // 👈 small image
+    width: 140,
     height: 140,
     marginBottom: 24,
   },

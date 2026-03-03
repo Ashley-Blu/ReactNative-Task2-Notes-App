@@ -1,28 +1,42 @@
 import { Stack, useRouter, useSegments } from "expo-router";
 import { useEffect, useState } from "react";
-import { getLoggedInUser } from "../storage/authStorage";
 import { View, ActivityIndicator } from "react-native";
+import { getLoggedInUser } from "../storage/authStorage";
 
 export default function Layout() {
   const router = useRouter();
-  const segments = useSegments();
+  const segments = useSegments(); // ✅ no type casting needed
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuth = async () => {
+    async function checkAuth() {
       const user = await getLoggedInUser();
-      const inAuthGroup = segments[0] === "auth";
+      const currentSegments = segments as string[];
 
-      if (!user && !inAuthGroup) {
-        router.replace("/auth/login");
+      // 1. ROOT ROUTE (/)
+      if (currentSegments.length === 0) {
+        if (user) router.replace("/notes/work");
+        setLoading(false);
+        return;
       }
 
-      if (user && inAuthGroup) {
-        router.replace("/notes/work");
+      // 2. AUTH ROUTES
+      if (currentSegments[0] === "auth") {
+        if (user) router.replace("/notes/work");
+        setLoading(false);
+        return;
+      }
+
+      // 3. PROTECTED ROUTES
+      const inAppGroup =
+        currentSegments[0] === "notes" || currentSegments[0] === "profile";
+
+      if (inAppGroup && !user) {
+        router.replace("/");
       }
 
       setLoading(false);
-    };
+    }
 
     checkAuth();
   }, [segments]);
