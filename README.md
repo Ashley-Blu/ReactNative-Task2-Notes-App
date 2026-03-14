@@ -1,132 +1,145 @@
-# Notes App
+#  Notes App
 
-A simple category-based notes application built with Expo Router and React Native (TypeScript).
-The app allows users to register, log in, and manage notes across different categories.
+A simple category-based notes application built with **Expo Router** and **React Native** (TypeScript).  
+Users can register, log in, and manage notes across different categories — all stored locally on device.
+
+---
 
 ## Features
 
- User Authentication (Login & Register)
+-  User Authentication (Login & Register)
+-  Category-based Notes (Work, Study, Personal)
+-  Add Notes
+-  Edit Notes
+-  Search Notes
+-  Category Filtering
+-  Local Storage Persistence
+-  Built with Expo Router
 
- Category-based Notes (Work, Study, Personal)
+---
 
- Add Notes
+##  Project Structure
 
- Edit Notes
-
- Search Notes
-
- Category Filtering
-
- Local Storage Persistence
-
- Built with Expo Router
-
- ---
-
-## Project Structure
+```
 app/
- ├── auth/
- │   ├── login.tsx
- │   └── register.tsx
- │
- ├── notes/
- │   ├── add.tsx
- │   ├── edit.tsx
- │   ├── personal.tsx
- │   ├── study.tsx
- │   ├── work.tsx
- │   ├── index.tsx
- │   └── profile.tsx
- │
- └── _layout.tsx
+├── auth/
+│   ├── login.tsx
+│   └── register.tsx
+│
+├── notes/
+│   ├── add.tsx
+│   ├── edit.tsx
+│   ├── personal.tsx
+│   ├── study.tsx
+│   ├── work.tsx
+│   ├── index.tsx
+│   └── profile.tsx
+│
+└── _layout.tsx
 
 components/
- ├── CategoryFilter.tsx
- ├── NoteForm.tsx
- ├── NoteItem.tsx
- ├── PrimaryButton.tsx
- └── SearchBar.tsx
+├── CategoryFilter.tsx
+├── NoteForm.tsx
+├── NoteItem.tsx
+├── PrimaryButton.tsx
+└── SearchBar.tsx
 
 storage/
- ├── authStorage.ts
- └── notesStorage.ts
+├── authStorage.ts
+└── notesStorage.ts
 
 assets/
- ├── image.png
- ├── login-register.png
- └── logo.png
-
- ---
-
-## Tech Stack
-
-React Native
-
-Expo
-
-Expo Router
-
-TypeScript
-
-AsyncStorage (for local data persistence)
+├── image.png
+├── login-register.png
+└── logo.png
+```
 
 ---
 
-## Installation
+##  Tech Stack
 
-### Clone the repository
+| Technology | Purpose |
+|---|---|
+| React Native | Mobile UI framework |
+| Expo | Development platform |
+| Expo Router | File-based navigation |
+| TypeScript | Type safety |
+| AsyncStorage | Local data persistence |
+
+---
+
+##  Getting Started
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- [Node.js](https://nodejs.org/) (v18 or newer)
+- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
+- [Expo CLI](https://docs.expo.dev/get-started/installation/)
+- [Expo Go](https://expo.dev/go) app on your mobile device (for testing)
+
+---
+
+### Installation
+
+**1. Clone the repository**
+
+```bash
 git clone https://github.com/Ashley-Blu/ReactNative-Task2-Notes-App.git
 cd notes-app
+```
 
-### Install dependencies
+**2. Install dependencies**
+
+```bash
 npm install
+```
 
-### Start the development server
+**3. Start the development server**
+
+```bash
 npx expo start
+```
+
+**4. Run on your device**
+
+- Scan the QR code in your terminal with the **Expo Go** app (Android/iOS)
+- Or press `a` for Android emulator / `i` for iOS simulator
 
 ---
 
-## Authentication
+##  Authentication
 
-### User credentials are stored locally using AsyncStorage via:
+User credentials are stored locally using AsyncStorage via:
 
-authStorage.ts
+- `authStorage.ts` — handles login/register/session
+- `notesStorage.ts` — handles note CRUD operations
 
-notesStorage.ts
-
-Note: This project uses local storage only (no backend).
-
----
-
-## Screens
-
-Login Screen
-
-Register Screen
-
-Notes Dashboard
-
-Add Note Screen
-
-Edit Note Screen
-
-Profile Screen
+> **Note:** This project uses local storage only — there is no backend or remote database.
 
 ---
 
-## Learning Objectives
+##  Screens
 
-### This project demonstrates:
+| Screen | Description |
+|---|---|
+| Login | Sign in with existing credentials |
+| Register | Create a new local account |
+| Notes Dashboard | View and filter all notes by category |
+| Add Note | Create a new note with title, body, and category |
+| Edit Note | Modify an existing note |
+| Profile | View account info |
 
-File-based routing with Expo Router
+---
 
-Component reusability
+##  Learning Objectives
 
-State management
+This project demonstrates:
 
-Local data persistence
-
-Navigation between nested routes
-
-Basic authentication flow
-
+- File-based routing with Expo Router
+- Component reusability and composition
+- Local state management
+- Data persistence with AsyncStorage
+- Navigation between nested routes
+- Basic authentication flow (local)

@@ -1,14 +1,8 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-
-type Note = {
-  id: string;
-  title: string;
-  content: string;
-  category: string;
-};
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import type { StoredNote } from "../storage/notesStorage";
 
 type Props = {
-  note: Note;
+  note: StoredNote;
   onPress: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -18,7 +12,7 @@ export function NoteItem({ note, onPress, onEdit, onDelete }: Props) {
   return (
     <TouchableOpacity onPress={onPress} style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.title}>{note.title}</Text>
+        <Text style={styles.title}>{note.title || "Untitled"}</Text>
 
         <View style={styles.actions}>
           {onEdit && (

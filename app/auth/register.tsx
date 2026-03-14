@@ -1,18 +1,18 @@
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-  Alert,
+    Alert,
+    Dimensions,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
-import { PrimaryButton } from "../../components/PrimaryButton";
-import { useRouter } from "expo-router";
-import { registerUser, loginUser } from "../../storage/authStorage";
 import image from "../../assets/image.png";
+import { PrimaryButton } from "../../components/PrimaryButton";
+import { loginUser, registerUser } from "../../storage/authStorage";
 
 export default function Register() {
   const router = useRouter();
@@ -38,11 +38,16 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await registerUser({
+      const success = await registerUser({
         email,
         username: email.split("@")[0],
         password,
       });
+
+      if (!success) {
+        Alert.alert("Error", "An account with this email already exists.");
+        return;
+      }
 
       // Auto-login after registration
       await loginUser(email, password);
